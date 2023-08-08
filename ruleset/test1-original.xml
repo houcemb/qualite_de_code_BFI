@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+
+<ruleset name="Code Style"
+         xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 https://pmd.sourceforge.io/ruleset_2_0_0.xsd">
+<rule name="uppercase class"
+      language="java"
+      message="test"
+      class="net.sourceforge.pmd.lang.rule.XPathRule">
+   <description>
+test test
+   </description>
+   <priority>3</priority>
+   <properties>
+      <property name="version" value="3.1"/>
+      <property name="xpath">
+         <value>
+<![CDATA[
+//ClassOrInterfaceDeclaration [matches(@SimpleName, '^[^A-Z]')]
+
+]]>
+         </value>
+      </property>
+   </properties>
+</rule>
+<rule name=" enhanced for loops"
+      language="java"
+      message="use enhanced for loops when available "
+      class="net.sourceforge.pmd.lang.rule.XPathRule">
+   <description>
+      it is better to use enhanced for loops instead of normal
+      for when dealing with lists
+   </description>
+   <priority>2</priority>
+   <properties>
+      <property name="version" value="3.1"/>
+      <property name="xpath">
+         <value>
+<![CDATA[
+//ForStatement//MethodCall[@MethodName='get']
+
+]]>
+         </value>
+      </property>
+   </properties>
+</rule>
+<rule name="Useless"
+          language="java"
+          message="This is a useless rule for testing"
+          class="com.rule.Rule"
+    >
+    
+        <priority>3</priority>    </rule>
+
+<rule name="uppercase class"
+      language="java"
+      message="test"
+      class="net.sourceforge.pmd.lang.rule.XPathRule">
+   <description>
+test test
+   </description>
+   <priority>3</priority>
+   <properties>
+      <property name="version" value="3.1"/>
+      <property name="xpath">
+         <value>
+<![CDATA[
+
+//Block/..[@Static="true"]
+]]>
+         </value>
+      </property>
+   </properties>
+</rule>
+</ruleset>
