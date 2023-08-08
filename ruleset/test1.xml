@@ -45,7 +45,7 @@ test test
       </property>
    </properties>
 </rule>
-<rule name="AtLeastOneConstructor"
+<rule name="java rule"
           language="java"
           since="1.04"
           message="Each class should declare at least one constructor"
@@ -83,12 +83,12 @@ test
       </property>
    </properties>
 </rule>
-<rule name="uppercase class"
+<rule name="no constructors in loops"
       language="java"
       message="test"
       class="net.sourceforge.pmd.lang.rule.XPathRule">
    <description>
-test test
+do not use constructors in loops it uses too much space 
    </description>
    <priority>3</priority>
    <properties>
