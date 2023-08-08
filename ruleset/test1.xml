@@ -74,8 +74,30 @@ test
       <property name="xpath">
          <value>
 <![CDATA[
-//ImportDeclaration[contains(@ImportedName,'Thread')] | //ImportDeclaration[contains(@ImportedName,'Runnable')] | //ImportDeclaration[contains(@ImportedName,'concurrent')]
 
+(//ImportDeclaration[contains(@ImportedName,'Thread')] | //ImportDeclaration[contains(@ImportedName,'Runnable')] | //ImportDeclaration[contains(@ImportedName,'concurrent')])|(//MethodDeclaration )[@Synchronized ="true"]| //SynchronizedStatement
+
+
+]]>
+         </value>
+      </property>
+   </properties>
+</rule>
+<rule name="uppercase class"
+      language="java"
+      message="test"
+      class="net.sourceforge.pmd.lang.rule.XPathRule">
+   <description>
+test test
+   </description>
+   <priority>3</priority>
+   <properties>
+      <property name="version" value="3.1"/>
+      <property name="xpath">
+         <value>
+<![CDATA[
+
+(//ForStatement | //WhileStatement | //DoStatement)//ConstructorCall/../..
 ]]>
          </value>
       </property>
