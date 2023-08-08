@@ -1,0 +1,39 @@
+installation : 
+	installing the code from the site 
+	https://github.com/pmd/pmd/releases
+	add the pmd path(path/to/pmd/bin) to the environement variables path (the path that cmd get his commands from ) $
+utilisation :
+	there is command that named pmd check requires 2 paramethers :
+		-the path of the target file or the target directory .(just write the path to the file)
+		-flagged -R the path to the ruleset that pmd uses (ruleset : a one or many xml files that contatains the rules that pmd check if they are voided or not)
+		(to use the rulesets of pmd you chould install the src of pmd )
+	there are other options like the format of the output the path of the output file etc
+costumization:
+	there are two types of costumization :
+		-to costumize the already existing rulesets given by pmd or 3rd partie by choosing what rules to include to your rulesets and costumizing the priority and message of the rule(see the rule section).
+		-to create your own rules there are 2 options:
+			-xpath rules(to be explained later)
+			-java rules(to be explained later)
+report:	
+	there are multiple report format but we are intrseted in 2 :
+		html report that contains list of the violations and the java file and the line it was located and a short description of the error 
+		xml reports that include the priority of the violation and the full description of it 
+xpath rule:
+	xpath stands for xml path language 
+	pmd uses a format called abstract syntaxe tree (AST) that converts the format of the code to a tree to be more clear each node of the tree present a class or method or a part of the source code to create your own rule you should have knowledge about the AST 
+	there is a graphic interface that assists with the creation of a rule set that shows the AST and helps with the creation of new rule(to be completed later)
+java rule:
+	to create a rule using java you must fork the java source code and use the extends/implement the java classes/interfaces to create a new class that contains the java rule using the methodes implemented in the pmd 
+rule :
+	each rule contains 7 components:
+		-name: the name of the rule
+		-message : to be displayed when the rule is violated
+		-priority : goees from 1 to 5 from high to low 
+		-example : demonstrate the correct usage 
+		-rule implementation : specify the logic to detect the pattern 
+		-propreties :configurable parameters that allow the user to costumize the behaviour of the rule  
+	
+
+ extenstion :
+	you can add to the gradle build a pmd plugin and use the costume ruleset that you want 
+
