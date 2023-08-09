@@ -45,26 +45,12 @@ test test
       </property>
    </properties>
 </rule>
-<rule name="java rule"
-          language="java"
-          since="1.04"
-          message="Each class should declare at least one constructor"
-          ref="C:\Users\GMI\IdeaProjects\rule1\target\useless.jar"
-	class="com.rule.Rule"
-    >
-        <description>
-test
-        </description>
-        <priority>3</priority>
-        <example>
 
-        </example>
-    </rule>
 
 <rule name="no multithreading "
       language="java"
       message="do not use multithreading"
-      class="net.sourceforge.pmd.lang.rule.XPathRule">
+      class="net.sourceforge.pmd.lang.rule.XPathRule">a 
    <description>
       using multi threading in  a place where you dont need it
    </description>
@@ -76,6 +62,7 @@ test
 <![CDATA[
 
 (//ImportDeclaration[contains(@ImportedName,'Thread')] | //ImportDeclaration[contains(@ImportedName,'Runnable')] | //ImportDeclaration[contains(@ImportedName,'concurrent')])|(//MethodDeclaration )[@Synchronized ="true"]| //SynchronizedStatement
+
 
 
 ]]>
