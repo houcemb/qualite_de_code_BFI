@@ -3,7 +3,7 @@ rules:
     languages:
       - java
     severity: WARNING
-    message: "Multithreading not recommended."
+    message: "Multithreading is not recommended. Multithreading can introduce complex synchronization challenges, leading to race conditions, deadlocks, and hard-to-diagnose bugs. Instead of using multithreading, consider employing alternative concurrency models that provide better control and safety."
     pattern-either:
       - pattern: |
           class $CLASS implements Runnable {
@@ -24,7 +24,7 @@ rules:
     languages:
       - java
     severity: ERROR
-    message: "Useless reassignment found."
+    message: "Useless reassignment found. Frequent and unnecessary reassignments of variables can lead to confusion, reduced readability, and potential bugs in your code. Strive for clarity and maintainability by minimizing unnecessary variable changes."
     patterns:
       - pattern-not:
           $X = $Y;
@@ -77,7 +77,7 @@ rules:
     languages:
       - java
     severity: ERROR
-    message: "Class name should start with an uppercase letter."
+    message: "Class name should start with an uppercase letter according to Java Class Naming Convention: Consistent naming conventions enhance code readability and maintainability."
     patterns:
       - pattern-inside: class $CLASS 
       - metavariable-regex:
@@ -88,14 +88,14 @@ rules:
     languages:
       - java
     severity: WARNING
-    message: "Static intializer not recommended."
+    message: "Static intializers are not recommended. Using static initializers can lead to unpredictable behavior, increased complexity, and difficulties in debugging and testing. Embrace explicit initialization methods to ensure better control and maintainability of your code."
     pattern: static { ... }
 
   - id: object-instantiation-inside-loop
     languages:
       - java
     severity: WARNING
-    message: "Object instantiation inside a loop not recommended."
+    message: "Object instantiation inside a loop is not recommended. Avoid object instantiation within loops: Creating objects within loops can impact performance and memory usage, leading to inefficient code execution. Strive for optimized resource utilization by moving object instantiation outside of loops."
     pattern-either:
       - pattern: |
           for ( ... ){
@@ -120,7 +120,7 @@ rules:
     languages:
       - java
     severity: ERROR
-    message: "Garbage collection is handled automatically by the JVM."
+    message: "Garbage collection should be handled automatically by the JVM to maintain a healthy and efficient Java application.."
     pattern: |
       $FOO.
       ...
