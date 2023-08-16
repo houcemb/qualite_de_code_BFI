@@ -6,7 +6,7 @@
          xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 https://pmd.sourceforge.io/ruleset_2_0_0.xsd">
 <rule name="uppercase class"
       language="java"
-      message="test"
+      message="the Oracle coding conventions recommend that class names should start with an uppercase letter"
       class="net.sourceforge.pmd.lang.rule.XPathRule">
    <description>
 test test
@@ -49,7 +49,7 @@ test test
 
 <rule name="no multithreading "
       language="java"
-      message="do not use multithreading"
+      message="do not use multithreading while not needed it causes many issues without any benefits"
       class="net.sourceforge.pmd.lang.rule.XPathRule">a 
    <description>
       using multi threading in  a place where you dont need it
@@ -72,7 +72,7 @@ test test
 </rule>
 <rule name="no constructors in loops"
       language="java"
-      message="test"
+      message="the use of a constructor in a loop can provoce a memory leak it is recommended to initiate the constructor outside the loop"
       class="net.sourceforge.pmd.lang.rule.XPathRule">
    <description>
 do not use constructors in loops it uses too much space 

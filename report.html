@@ -15,24 +15,36 @@
     <table border="1">
         <tr>
             <th>File</th>
-            <th>Name</th>
+            <th>Rule Name</th>
            
             <th>Message</th>
-            <th>Line</th>
-            <th>Column</th>
+            <th>Line in Code</th>
+            
             <th>Severity</th>
         </tr>
-        {% for violation in parsed_report.violations %}
+        {% for violation in parsed_report_pmd.violations %}
         <tr>
             <td>{{ violation.file }}</td>
             <td>{{ violation.name }}</td>
           
             <td>{{ violation.message }}</td>
             <td>{{ violation.line }}</td>
-            <td>{{ violation.column }}</td>
+           
             <td>{{ violation.severity }}</td>
         </tr>
         {% endfor %}
+        {% for violation in parsed_report_semgrep.violations %}
+        <tr>
+            <td>{{ violation.file }}</td>
+            <td>{{ violation.name }}</td>
+          
+            <td>{{ violation.message }}</td>
+            <td>{{ violation.line }}</td>
+           
+            <td>{{ violation.severity }}</td>
+        </tr>
+        {% endfor %}
+
     </table>
 </body>
 </html>
