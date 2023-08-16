@@ -1,0 +1,48 @@
+Semgrep Documentation (Semgrep installation guide from Semgrep official website: https://semgrep.dev/docs/getting-started/)
+ 
+
+
+	I) Downloading Semgrep:
+
+
+NOTE!!! : Semgrep OSS Engine is functional only on macOS, Linux, Docker and WSL (Windows Subsystem for Linux) but it provides
+the semgrep playground where you can write rules and analyse your code on line.
+If you chose to use semgrep playground you can skip the next instructions as they explain
+
+
+  * Prerequisite:
+
+- Python 3.7 or later versions (you can download python from the official website: https://www.python.org/downloads/).
+
+- If you're using Windows, you need to install WSL by running wsl --install command in Powershell executed as administrator
+or by following the Microsoft Manual installation of WSL 
+(https://learn.microsoft.com/fr-fr/windows/wsl/install-manual)
+
+
+  *Installing Semgrep:
+
+To install Semgrep try running the following command: python -m pip install semgrep
+
+To confirm installation type: semgrep --version
+
+
+	II) Writing code:
+
+Semgrep enables developers to test their code even before it's compiled (Semgrep is designed to analyze source code which means .java files).
+Thus to test java code with Semgrep we don't need JDK or any special editors installed.
+We only need to save our code in a .java file using the text editor (under WSL when working with Windows).
+
+
+	III) Writing rules:
+
+To write the desired rules you can learn the correct syntax on https://semgrep.dev/docs/writing-rules/rule-syntax/
+Next save the rules in a yml file.
+
+
+	IV) Code analysis:
+
+Let's assume our code file is called MyCode.java and the rule file is called RuleSet.yml to test our code we only need to run the following command 
+semgrep --config RuleSet.yml MyCode.java
+
+
+

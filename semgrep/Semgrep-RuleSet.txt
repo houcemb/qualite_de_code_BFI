@@ -1,0 +1,127 @@
+rules:
+  - id: multithreading
+    languages:
+      - java
+    severity: WARNING
+    message: "Multithreading not recommended."
+    pattern-either:
+      - pattern: |
+          class $CLASS implements Runnable {
+            ...
+          }
+      - pattern: |
+          class $CLASS extends Thread {
+            ...
+          } 
+      - pattern: |
+          import java.util.concurrent
+      - pattern: |
+          synchronized (...){...}
+      - pattern: |
+          synchronized $TYPE $NAME (...){...}
+
+  - id: useless-reassignment
+    languages:
+      - java
+    severity: ERROR
+    message: "Useless reassignment found."
+    patterns:
+      - pattern-not:
+          $X = $Y;
+          ... 
+          $FOO (..., $X,...) ;
+          ...
+          $X = $Z;
+      - pattern-not:
+          $X = $Y;
+          ...
+          $FOO(...)
+          . ...
+          .$X 
+          . ...
+          .$BAR(...);
+          ...
+          $X = $Z;
+      -  pattern-not:
+          $X = $Y;
+          ...
+          $X 
+          . ...
+          .$BAR(...);
+          ...
+          $X = $Z;
+      -  pattern-not:
+          $X = $Y;
+          ...
+          $FOO (...)
+          . ...
+          .$X(...);
+          ...
+          $X = $Z;
+      - pattern-not:
+          ...
+          ... $X = $Y;
+          ... 
+          $FOO (...) {
+            ...
+            $X = $Z;
+            ...
+          }
+
+      - pattern: |
+              $X = $Y;
+              ...
+              $X = $Z;
+
+  - id: class-name
+    languages:
+      - java
+    severity: ERROR
+    message: "Class name should start with an uppercase letter."
+    patterns:
+      - pattern-inside: class $CLASS 
+      - metavariable-regex:
+          metavariable: "$CLASS"
+          regex: "^[^A-Z].*"          
+
+  - id: static-initializer
+    languages:
+      - java
+    severity: WARNING
+    message: "Static intializer not recommended."
+    pattern: static { ... }
+
+  - id: object-instantiation-inside-loop
+    languages:
+      - java
+    severity: WARNING
+    message: "Object instantiation inside a loop not recommended."
+    pattern-either:
+      - pattern: |
+          for ( ... ){
+            ...
+            $V = new $T ( ... );
+            ...
+          } 
+      - pattern: |
+          while ( ... ){
+            ...
+            $V = new $T ( ... );
+            ...
+          } 
+      - pattern: |
+          do {
+            ...
+            $V = new $T ( ... );
+            ...
+          } while ( ... );
+
+  - id: garbage-collection
+    languages:
+      - java
+    severity: ERROR
+    message: "Garbage collection is handled automatically by the JVM."
+    pattern: |
+      $FOO.
+      ...
+      .gc (...)
