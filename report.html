@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Score Report</title>
+</head>
+<body>
+    <h1>Score Report</h1>
+    <p>Result {{passed}} </p>
+    <p>Score {{score}} </p>
+    <p>WARNING count: {{ warning_count }}</p>
+    <p>INFO count: {{ info_count }}</p>
+    <p>ERROR count: {{ error_count }}</p>
+    <p></p>
+    <h2>Parsed Report</h2>
+    <table border="1">
+        <tr>
+            <th>File</th>
+            <th>Name</th>
+           
+            <th>Message</th>
+            <th>Line</th>
+            <th>Column</th>
+            <th>Severity</th>
+        </tr>
+        {% for violation in parsed_report.violations %}
+        <tr>
+            <td>{{ violation.file }}</td>
+            <td>{{ violation.name }}</td>
+          
+            <td>{{ violation.message }}</td>
+            <td>{{ violation.line }}</td>
+            <td>{{ violation.column }}</td>
+            <td>{{ violation.severity }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
