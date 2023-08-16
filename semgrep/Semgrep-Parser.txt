@@ -1,0 +1,84 @@
+import os
+import subprocess
+import xml.etree.ElementTree as ET
+import xml.dom.minidom
+import sys
+from jinja2 import Template
+import http.server
+import socketserver
+import webbrowser
+
+
+def run_semgrep(rules,code):
+        semgrep_command = [
+                "semgrep",
+                "--config",
+                rules,
+                "--junit-xml",
+                code
+        ]
+        junit_output = subprocess.check_output(semgrep_command, )
+        return (junit_output)
+
+def parse_output(junit_output):
+        root = ET.fromstring(junit_output)
+        models=root.findall(".//testcase")
+        list=[]
+        dic = {"violations":list}
+        for i in models:
+                list.append({"name":i.get('name'),
+                        "file":i.get('file'),
+                        "line":i.get('line'),
+                        "severity":i.find('failure').get('type'),
+                        "message":i.find('failure').get('message')
+                })
+        return (dic)
+
+def score_calculator(parsed_output):
+        violations = parsed_output['violations']
+        errors = 0
+        warnings = 0
+        infos = 0
+        for violation in violations:
+                severity = violation['severity']
+                match severity:
+                        case 'ERROR':
+                                errors+=1
+                        case 'WARNING':
+                                warnings+=1
+                        case 'INFO':
+                                infos+=1
+        score = 10
+        if errors > 0:
+                score = 0
+        elif warnings > 0:
+                score -= warnings
+        elif infos > 0:
+                score -= 0.5*infos
+        return {'errors': errors, 'warnings': warnings, 'infos': infos,'score': score}
+
+def generate_html_report(score):
+        temp = Template(open('template.html').read())
+        report = temp.render(score=score)
+        return report
+
+def start_web_server():
+        PORT = 8000
+        Handler = http.server.SimpleHTTPRequestHandler
+        httpd = socketserver.TCPServer(("localhost",PORT),Handler)
+        print ("Web server started at http://localhost:{}/report.html".format(PORT))
+        webbrowser.open("http://localhost:{}/report.html".format(PORT))
+        httpd.serve_forever()
+
+semgrep_output = run_semgrep(sys.argv[1],sys.argv[2])
+json_output = parse_output(semgrep_output)
+result = score_calculator(json_output)
+report = generate_html_report(result['score'])
+print ("score: ",result['score'])
+if result['score'] < 5:
+        print ('Analysis failed')
+else:
+        print ('Analysis ended successfully')
+with open('report.html','w') as report_page:
+        report_page.write(report)
+start_web_server()
