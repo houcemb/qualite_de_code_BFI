@@ -55,20 +55,17 @@ def severity_normalizer(x):
     return severity 
 
 def pmd_parser(non_parsed_report ):
-    violations = []
-    for dict in non_parsed_report["files"]:
-        for violation in dict['violations']:
-            severity = severity_normalizer(violation['priority'])
-            dictionary = {
+    violations=[{
                 'file': os.path.basename( dict['filename']),
                 'name': violation['rule'],
                 'priority': violation['priority'],
                 'message': violation['description'],
                 'line': violation['beginline'],
                 
-                'severity': severity
-            }
-            violations.append(dictionary)    
+                'severity': severity_normalizer(violation['priority'])
+            } for dict in non_parsed_report["files"] for violation in dict['violations']]
+
+
     return {"violations":violations}
 
 def search_tag(parent,child):
@@ -91,59 +88,120 @@ def search_tags(parent,child):
 def semgrep_parser(junit_output):
         root = ET.fromstring(junit_output)
         models=search_tags(root,".//testcase")
-        violations=[]
-        for i in models:
-                f=search_tag(i,"failure")
-                violations.append({"name":i.get('name'),
+        violations=[{"name":i.get('name'),
                         "file":i.get('file'),
                         "line":i.get('line'),
                         "severity":f.get('type'),
                         "message":f.get('message')
-                })
+                } for i in models for f in [search_tag(i, "failure")]
+                                        if f is not None ]
+
+
         return {"violations":violations}
 
-def result_dic(violations):
+def result_dic(violations_list):
     warning_count = 0
     info_count = 0
     error_count = 0
    
-    for violation in violations:       
-        severity = violation.get("severity", "")
-        if severity == WARNING:
-            warning_count += 1
-        elif severity == INFO:
-            info_count += 1
-        elif severity == ERROR:
-            error_count += 1
+    for violations in violations_list:
+        for violation in violations["violations"]:
+            severity = violation.get("severity")
+            if severity == WARNING:
+                warning_count += 1
+            elif severity == INFO:
+                info_count += 1
+            elif severity == ERROR:
+                error_count += 1
     return {"WARNING": warning_count, "INFO": info_count, "ERROR": error_count}
 
 def score_calculator(dic):
     dic_score={}
     dic_score ["score"] = 10
+    dic_score["WARNING"] = dic["WARNING"]
+    dic_score["INFO"] = dic["INFO"]
+    dic_score["ERROR"] = dic["ERROR"]
     if dic["ERROR"] > 0:
         dic_score ["score"] = 0
         dic_score ["result"] = False 
     else :
         #score could be negative !!!!!!!!!!!
         s=10 - dic["WARNING"]- dic["INFO"]*0.5
-        dic_score ["score"] = s > 0 ? s : 0
+        dic["score"] = s if s > 0 else 0
         dic_score ["result"] = dic_score ["score"]>=5
+        
     return dic_score
             
 def html_generator(parsed_report_pmd,parsed_report_semgrep,score_dict,path):
-    env = Environment(loader=FileSystemLoader('.'))
-    template = env.get_template('report.html')
-    warning_count = score_dict["WARNING"] 
-    info_count = score_dict["INFO"]
-    error_count = score_dict["ERROR"]
-    rendered_html = template.render(
-        warning_count=warning_count,
-        info_count=info_count,
-        error_count=error_count,
-        parsed_report_pmd=parsed_report_pmd,
-        parsed_report_semgrep=parsed_report_semgrep,  
-        score = score_dict["score"],
-        passed = score_dict["result"])
+    html_template = """
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Score Report</title>
+</head>
+<body>
+    <h1>Score Report</h1>
+    <p>Result {passed} </p>
+    <p>Score {score} </p>
+    <p>WARNING count: {warning_count}</p>
+    <p>INFO count: {info_count}</p>
+    <p>ERROR count: {error_count}</p>
+    <p></p>
+    <h2>Parsed Report</h2>
+    <table border="1">
+        <tr>
+            <th>File</th>
+            <th>Rule Name</th>
+            <th>Message</th>
+            <th>Line in Code</th>
+            <th>Severity</th>
+        </tr>
+        {parsed_report_pmd_loop}
+        {parsed_report_semgrep_loop}
+    </table>
+</body>
+</html>
+"""
+
+# Generate content for PMD violations
+    parsed_report_pmd_loop = ""
+    for violation in parsed_report_pmd['violations']:
+        parsed_report_pmd_loop += f"""
+        <tr>
+            <td>{violation['file']}</td>
+            <td>{violation['name']}</td>
+            <td>{violation['message']}</td>
+            <td>{violation['line']}</td>
+            <td>{violation['severity']}</td>
+        </tr>
+    """
+
+# Generate content for Semgrep violations
+    parsed_report_semgrep_loop = ""
+    for violation in parsed_report_semgrep['violations']:
+        parsed_report_semgrep_loop += f"""
+        <tr>
+            <td>{violation['file']}</td>
+            <td>{violation['name']}</td>
+            <td>{violation['message']}</td>
+            <td>{violation['line']}</td>
+            <td>{violation['severity']}</td>
+        </tr>
+    """
+
+# Format the HTML template with dynamic data and generated loops
+    rendered_html = html_template.format(
+    warning_count=score_dict["WARNING"],
+    info_count= score_dict["INFO"] ,
+    error_count=score_dict["ERROR"],
+    parsed_report_pmd_loop=parsed_report_pmd_loop,
+    parsed_report_semgrep_loop=parsed_report_semgrep_loop,
+    score=score_dict["score"],
+    passed=score_dict["result"]
+)
+
+# Now you can use the 'rendered_html' string as needed.
+
     # Write the rendered HTML to a file
     path.write(rendered_html)
 
@@ -177,10 +235,11 @@ def main():
     report_list = []
     report_list.append(parsed_report_pmd)
     report_list.append(parsed_report_semgrep) 
+    
     result= result_dic(report_list)
-    score=score_calculator(result)
+    score_dict=score_calculator(result)
 
-    print(score)
+    print(score_dict["result"])
     html_generator(parsed_report_pmd,parsed_report_semgrep,score_dict,path)
     
 
