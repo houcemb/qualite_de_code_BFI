@@ -2,17 +2,13 @@ import argparse
 import subprocess
 import json
 import os.path
-from jinja2 import Environment, FileSystemLoader
+
 import os
 import subprocess
 import xml.etree.ElementTree as ET
-import xml.dom.minidom
-import sys
-from jinja2 import Template
-import http.server
-import socketserver
-import webbrowser
-import sys
+
+
+
 
 ERROR = "ERROR" 
 WARNING = "WARNING"
