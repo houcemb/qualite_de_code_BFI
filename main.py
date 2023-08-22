@@ -22,7 +22,7 @@ def run_tool (command):
                                 text=True,
                                 check=True)
         return result.stdout
-    except subprocess.CalledProcessError as e:
+    except subprocess.SubprocessError as e:
         print("Error:", e)
         print("Error Output:")
         print(e.stderr)
