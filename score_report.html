@@ -2,27 +2,292 @@
 <!DOCTYPE html>
 <html>
 <head>
+<link rel="stylesheet" href="./pico/css/pico.min.css">
+
     <title>Score Report</title>
+    <link href="prism/prism.css" rel="stylesheet" />
+
 </head>
 <body>
-    <h1>Score Report</h1>
-    <p>Result True </p>
-    <p>Score 10 </p>
-    <p>WARNING count: 0</p>
-    <p>INFO count: 0</p>
-    <p>ERROR count: 0</p>
-    <p></p>
-    <h2>Parsed Report</h2>
-    <table border="1">
+    <h1 style="padding: 20px;" >Score Report</h1>
+     <ul style="padding: 40px;">
+        <li>Result : False</li>
+        <li>Score : 0</li>
+        <li>WARNING count : 12</li>
+        <li>INFO count : 0</li>
+        <li>ERROR count : 5</li>
+    </ul>
+    <h2 style="padding: 30px;">Violations Details</h2>
+    <thead>
+    <table border="5">
+    <thead>
         <tr>
             <th>File</th>
             <th>Rule Name</th>
             <th>Message</th>
             <th>Line in Code</th>
             <th>Severity</th>
+            <th>error code </th>
+            
         </tr>
+    </thead>
+    <tbody>
         
-        
+    <tr>
+        <td>TestingCode/Calculator.java</td>
+        <td>no constructors in loops</td>
+        <td>the use of a constructor in a loop can provoce a memory leak it is recommended to initiate the constructor outside the loop</td>
+        <td>19</td>
+        <td>WARNING</td>   
+        <td><PRE>         int j =3;
+        for (int i =0; i&lt;j; i++){
+<code class="language-java">            String s = new String(&quot;x &quot;+i);
+</code>        }
+        return x*y;
+</PRE></td>
+
+    </tr>
+
+    <tr>
+        <td>TestingCode/CodeTesting.java</td>
+        <td>uppercase class</td>
+        <td>the Oracle coding conventions recommend that class names should start with an uppercase letter</td>
+        <td>1</td>
+        <td>WARNING</td>   
+        <td><PRE> <code class="language-java">public class codeTesting {
+</code>
+    public int addNumbers(int a, int b) {
+</PRE></td>
+
+    </tr>
+
+    <tr>
+        <td>TestingCode/CodeTesting.java</td>
+        <td>no constructors in loops</td>
+        <td>the use of a constructor in a loop can provoce a memory leak it is recommended to initiate the constructor outside the loop</td>
+        <td>48</td>
+        <td>WARNING</td>   
+        <td><PRE> 
+        for (int i = 0; i &lt; 4; i++) {
+<code class="language-java">            String s = new String(&quot;test&quot;);
+</code>
+        }
+</PRE></td>
+
+    </tr>
+
+    <tr>
+        <td>TestingCode/CodeTesting.java</td>
+        <td>no constructors in loops</td>
+        <td>the use of a constructor in a loop can provoce a memory leak it is recommended to initiate the constructor outside the loop</td>
+        <td>55</td>
+        <td>WARNING</td>   
+        <td><PRE>         while (true) {
+            k++;
+<code class="language-java">            String s = new String(&quot;test&quot;);
+</code>            if (k == 4) {
+                break;
+</PRE></td>
+
+    </tr>
+
+    <tr>
+        <td>TestingCode/CodeTesting.java</td>
+        <td>no multithreading </td>
+        <td>do not use multithreading while not needed it causes many issues without any benefits</td>
+        <td>61</td>
+        <td>ERROR</td>   
+        <td><PRE> 
+        }
+<code class="language-java">        synchronized (this) {
+</code>        k = 0;}
+
+</PRE></td>
+
+    </tr>
+
+    <tr>
+        <td>TestingCode/CodeTesting.java</td>
+        <td>no constructors in loops</td>
+        <td>the use of a constructor in a loop can provoce a memory leak it is recommended to initiate the constructor outside the loop</td>
+        <td>67</td>
+        <td>WARNING</td>   
+        <td><PRE>             k++;
+
+<code class="language-java">            String s = new String(&quot;test&quot;);
+</code>        } while (k &lt;= 4);
+    }
+</PRE></td>
+
+    </tr>
+
+    <tr>
+        <td>TestingCode/CodeTesting.java</td>
+        <td>no multithreading </td>
+        <td>do not use multithreading while not needed it causes many issues without any benefits</td>
+        <td>77</td>
+        <td>ERROR</td>   
+        <td><PRE>     }
+
+<code class="language-java">  synchronized   public void LiftWeights()
+</code>    {
+
+</PRE></td>
+
+    </tr>
+
+    <tr>
+        <td>TestingCode/CodeTesting.java</td>
+        <td>uppercase class</td>
+        <td>the Oracle coding conventions recommend that class names should start with an uppercase letter</td>
+        <td>86</td>
+        <td>WARNING</td>   
+        <td><PRE> 
+}
+<code class="language-java">class test{
+</code>
+}
+</PRE></td>
+
+    </tr>
+
+    <tr>
+        <td>TestingCode/CodeTesting.java</td>
+        <td>semgrep.multithreading</td>
+        <td>Multithreading not recommended.</td>
+        <td>61</td>
+        <td>WARNING</td>   
+        <td><PRE> 
+        }
+<code class="language-java">        synchronized (this) {
+</code>        k = 0;}
+
+</PRE></td>
+
+    </tr>
+
+    <tr>
+        <td>TestingCode/CodeTesting.java</td>
+        <td>semgrep.multithreading</td>
+        <td>Multithreading not recommended.</td>
+        <td>77</td>
+        <td>WARNING</td>   
+        <td><PRE>     }
+
+<code class="language-java">  synchronized   public void LiftWeights()
+</code>    {
+
+</PRE></td>
+
+    </tr>
+
+    <tr>
+        <td>TestingCode/CodeTesting.java</td>
+        <td>semgrep.useless-reassignment</td>
+        <td>Useless reassignment found.</td>
+        <td>51</td>
+        <td>ERROR</td>   
+        <td><PRE> 
+        }
+<code class="language-java">        int k = 0;
+</code>
+        while (true) {
+</PRE></td>
+
+    </tr>
+
+    <tr>
+        <td>TestingCode/CodeTesting.java</td>
+        <td>semgrep.class-name</td>
+        <td>Class name should start with an uppercase letter.</td>
+        <td>1</td>
+        <td>ERROR</td>   
+        <td><PRE> <code class="language-java">public class codeTesting {
+</code>
+    public int addNumbers(int a, int b) {
+</PRE></td>
+
+    </tr>
+
+    <tr>
+        <td>TestingCode/CodeTesting.java</td>
+        <td>semgrep.class-name</td>
+        <td>Class name should start with an uppercase letter.</td>
+        <td>86</td>
+        <td>ERROR</td>   
+        <td><PRE> 
+}
+<code class="language-java">class test{
+</code>
+}
+</PRE></td>
+
+    </tr>
+
+    <tr>
+        <td>TestingCode/Calculator.java</td>
+        <td>semgrep.object-instantiation-inside-loop</td>
+        <td>Object instantiation inside a loop not recommended.</td>
+        <td>18</td>
+        <td>WARNING</td>   
+        <td><PRE> 
+        int j =3;
+<code class="language-java">        for (int i =0; i&lt;j; i++){
+</code>            String s = new String(&quot;x &quot;+i);
+        }
+</PRE></td>
+
+    </tr>
+
+    <tr>
+        <td>TestingCode/CodeTesting.java</td>
+        <td>semgrep.object-instantiation-inside-loop</td>
+        <td>Object instantiation inside a loop not recommended.</td>
+        <td>47</td>
+        <td>WARNING</td>   
+        <td><PRE>         int average_b = sum_b / 4;
+
+<code class="language-java">        for (int i = 0; i &lt; 4; i++) {
+</code>            String s = new String(&quot;test&quot;);
+
+</PRE></td>
+
+    </tr>
+
+    <tr>
+        <td>TestingCode/CodeTesting.java</td>
+        <td>semgrep.object-instantiation-inside-loop</td>
+        <td>Object instantiation inside a loop not recommended.</td>
+        <td>53</td>
+        <td>WARNING</td>   
+        <td><PRE>         int k = 0;
+
+<code class="language-java">        while (true) {
+</code>            k++;
+            String s = new String(&quot;test&quot;);
+</PRE></td>
+
+    </tr>
+
+    <tr>
+        <td>TestingCode/CodeTesting.java</td>
+        <td>semgrep.object-instantiation-inside-loop</td>
+        <td>Object instantiation inside a loop not recommended.</td>
+        <td>64</td>
+        <td>WARNING</td>   
+        <td><PRE>         k = 0;}
+
+<code class="language-java">        do {
+</code>            k++;
+
+</PRE></td>
+
+    </tr>
+
+    </tbody>
     </table>
+    
+    <script src="prism.js"></script>
+
 </body>
 </html>

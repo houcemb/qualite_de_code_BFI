@@ -1,4 +1,4 @@
-public class CodeTesting {
+public class codeTesting {
 
     public int addNumbers(int a, int b) {
         return a + b;
